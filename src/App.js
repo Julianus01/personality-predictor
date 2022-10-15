@@ -4,20 +4,32 @@ import { ArrowRight, Activity, Loader } from 'react-feather'
 import { Button, Dots, Input } from './styles'
 import theme from './theme/theme'
 
+const TRAITS = [
+  'smells like cabbage 👃',
+  'sucks 🍭',
+  'has an extra chromosome 😅',
+  'likes to smell farts 👃',
+  'loves pineapple on pizza 🍍',
+]
+
+const getRandomTrait = () => {
+  return TRAITS[Math.floor(Math.random() * TRAITS.length)]
+}
+
 const wait = (time = 1000) => new Promise((resolve) => setTimeout(resolve, time))
 
 const App = () => {
-  const [showPrediction, setShowPrediction] = useState(false)
+  const [randomTrait, setRandomTrait] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [name, setName] = useState('')
 
   const search = useCallback(async () => {
     setIsLoading(true)
-    setShowPrediction(false)
+    setRandomTrait(null)
 
     await wait()
 
-    setShowPrediction(true)
+    setRandomTrait(getRandomTrait())
     setIsLoading(false)
   }, [])
 
@@ -37,7 +49,7 @@ const App = () => {
 
   const onInputChange = ({ target: { value } }) => {
     setName(value)
-    setShowPrediction(false)
+    setRandomTrait(null)
   }
 
   const onEnterPressed = ({ key }) => {}
@@ -50,7 +62,7 @@ const App = () => {
           <br />
           your
           <br />
-          <Grey>personality</Grey>
+          <Grey>personality trait</Grey>
         </Title>
 
         <FormContainer>
@@ -75,9 +87,9 @@ const App = () => {
 
         <br />
         <br />
-        {showPrediction && (
+        {randomTrait && (
           <PredictionText>
-            {name} <Grey>sucks 😅</Grey>
+            {name} <Grey>{randomTrait}</Grey>
           </PredictionText>
         )}
 
